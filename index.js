@@ -449,7 +449,5 @@ function updateTimer() {
     }
 }
 
-/**
- * Početak igre.
- */
+// Početak igre.
 startGame()
