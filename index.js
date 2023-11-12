@@ -81,6 +81,11 @@ class Component {
  */
 class Player extends Component {
     /**
+     * Pritisnute tipke na tipkovnici.
+     */
+    keys
+
+    /**
      * Postavlja širinu, visinu, boju ispune, boju obruba, poziciju i brzinu igrača.
      * @param width Širina igrača.
      * @param height Visina igrača.
@@ -101,56 +106,52 @@ class Player extends Component {
         this.y = gameArea.context.canvas.height / 2 - this.height / 2
 
         // Postavljanje brzine igrača u smjeru x i y osi.
-        this.speed_x = this.speed_y = 10
+        this.speed_x = this.speed_y = 4
+
+        // Postavljanje pritisnutih tipki na prazan objekt.
+        this.keys = {}
     }
 
     /**
      * Ažurira poziciju igrača ovisno o pritisnutoj tipki na tipovnici.
-     * @param key Tipka na tipkovnici koja ja pritisnuta.
      */
-    newPos(key) {
-        switch (key) {
-            // U slučaju pritiska gornje strelice smanjujemo y koordinatu igrača za brzinu u smjeru y osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz gornji rub.
-            case 'ArrowUp': {
-                if (this.y - this.speed_y < 0) {
-                    this.y = 0
-                } else {
-                    this.y -= this.speed_y
-                }
-                break
+    newPos() {
+        // U slučaju pritiska gornje strelice smanjujemo y koordinatu igrača za brzinu u smjeru y osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz gornji rub.
+        if (this.keys['ArrowUp']) {
+            if (this.y - this.speed_y < 0) {
+                this.y = 0
+            } else {
+                this.y -= this.speed_y
             }
-            // U slučaju pritiska donje strelice povećavamo y koordinatu igrača za brzinu u smjeru y osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz donji rub.
-            case 'ArrowDown': {
-                if (
-                    this.y + this.height + this.speed_y >
-                    gameArea.context.canvas.height
-                ) {
-                    this.y = gameArea.context.canvas.height - this.height
-                } else {
-                    this.y += this.speed_y
-                }
-                break
+        }
+        // U slučaju pritiska donje strelice povećavamo y koordinatu igrača za brzinu u smjeru y osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz donji rub.
+        if (this.keys['ArrowDown']) {
+            if (
+                this.y + this.height + this.speed_y >
+                gameArea.context.canvas.height
+            ) {
+                this.y = gameArea.context.canvas.height - this.height
+            } else {
+                this.y += this.speed_y
             }
-            // U slučaju pritiska lijeve strelice smanjujemo x koordinatu igrača za brzinu u smjeru x osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz lijevi rub.
-            case 'ArrowLeft': {
-                if (this.x - this.speed_x < 0) {
-                    this.x = 0
-                } else {
-                    this.x -= this.speed_x
-                }
-                break
+        }
+        // U slučaju pritiska lijeve strelice smanjujemo x koordinatu igrača za brzinu u smjeru x osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz lijevi rub.
+        if (this.keys['ArrowLeft']) {
+            if (this.x - this.speed_x < 0) {
+                this.x = 0
+            } else {
+                this.x -= this.speed_x
             }
-            // U slučaju pritiska desne strelice povećavamo x koordinatu igrača za brzinu u smjeru x osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz desni rub.
-            case 'ArrowRight': {
-                if (
-                    this.x + this.width + this.speed_x >
-                    gameArea.context.canvas.width
-                ) {
-                    this.x = gameArea.context.canvas.width - this.width
-                } else {
-                    this.x += this.speed_x
-                }
-                break
+        }
+        // U slučaju pritiska desne strelice povećavamo x koordinatu igrača za brzinu u smjeru x osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz desni rub.
+        if (this.keys['ArrowRight']) {
+            if (
+                this.x + this.width + this.speed_x >
+                gameArea.context.canvas.width
+            ) {
+                this.x = gameArea.context.canvas.width - this.width
+            } else {
+                this.x += this.speed_x
             }
         }
     }
@@ -338,7 +339,7 @@ const gameArea = new GameArea()
 const INITIAL_ASTEROIDS = 5
 
 // Maksimalan broj asteroida koji je moguće generirati.
-const MAX_ASTEROIDS = 20
+const MAX_ASTEROIDS = 25
 
 // Vrijeme do ponovnog generiranja novog asteroida (u milisekundama).
 const GENERATE_TIME = 2000
@@ -371,9 +372,14 @@ function startGame() {
         asteroids.push(new Asteroid())
     }
 
-    // Dodavanje listenera koji po pritisku tipke na tipkovnici poziva metodu za ažuriranje pozicije igrača.
+    // Dodavanje listenera koji po pritisku tipke na tipkovnici uključuje pritisnutu tipku u atributu keys objekta player.
     document.addEventListener('keydown', event => {
-        player.newPos(event.key)
+        player.keys[event.key] = true
+    })
+
+    // Dodavanje listenera koji po prestanku pritiska tipke na tipkovnici isključuje tu tipku u atributu keys objekta player.
+    document.addEventListener('keyup', event => {
+        player.keys[event.key] = false
     })
 
     // Postavljanje intervala koji nakon zadanog vremena stvara novi asteroid do maksimalnog broja asteroida.
@@ -393,7 +399,8 @@ function updateGameArea() {
     // Čišćenje konteksta crtanja Canvasa.
     gameArea.clear()
 
-    // Iscrtavanje igrača na Canvasu.
+    // Ažuriranje pozicije igrača i iscrtavanje na Canvasu.
+    player.newPos()
     player.update()
 
     // Ažuriranje pozicije i iscrtavanje svakog asteroida na Canvasu te zaustavljanje igre u slučaju kolizije nekog asteroida s igračem.
