@@ -1,4 +1,13 @@
 class Component {
+    context
+    width
+    height
+    color
+    borderColor
+    x
+    y
+    speed_x
+    speed_y
     update() {
         this.context = gameArea.context
         this.context.save()
@@ -79,26 +88,25 @@ class Asteroid extends Component {
             // Top
             case 0: {
                 this.x = Math.random() * gameArea.context.canvas.width
-                this.y = -this.height
+                this.y = -this.height - 200
                 break
             }
             // Bottom
             case 1: {
                 this.x = Math.random() * gameArea.context.canvas.width
-                this.y = gameArea.context.canvas.height
+                this.y = gameArea.context.canvas.height + 200
                 break
             }
             // Left
             case 2: {
-                this.x = -this.width
+                this.x = -this.width - 200
                 this.y = Math.random() * gameArea.context.canvas.height
                 break
             }
             // Right
             case 3: {
-                this.x = gameArea.context.canvas.width
+                this.x = gameArea.context.canvas.width + 200
                 this.y = Math.random() * gameArea.context.canvas.height
-
                 break
             }
         }
@@ -113,16 +121,16 @@ class Asteroid extends Component {
     newPos() {
         if (this.x < -300) {
             this.speed_x = Math.abs(this.speed_x)
-        } else if (this.x + this.width >= gameArea.context.canvas.width + 300) {
-            this.speed_x = -this.speed_x
+        } else if (this.x + this.width > gameArea.context.canvas.width + 300) {
+            this.speed_x = this.speed_x > 0 ? -this.speed_x : this.speed_x
         }
         if (this.y < -300) {
             this.speed_y = Math.abs(this.speed_y)
         } else if (
-            this.y + this.height >=
+            this.y + this.height >
             gameArea.context.canvas.height + 300
         ) {
-            this.speed_y = -this.speed_y
+            this.speed_y = this.speed_y > 0 ? -this.speed_y : this.speed_y
         }
         this.x += this.speed_x
         this.y += this.speed_y
@@ -130,6 +138,10 @@ class Asteroid extends Component {
 }
 
 class GameArea {
+    canvas
+    context
+    gameInterval
+    timerInterval
     constructor() {
         this.canvas = document.createElement('canvas')
     }
@@ -172,7 +184,8 @@ class GameArea {
 
 const gameArea = new GameArea()
 
-const NUMBER_OF_ASTEROIDS = 20
+const INITIAL_ASTEROIDS = 5
+const MAX_ASTEROIDS = 20
 const GENERATE_TIME = 2000 // milliseconds
 
 let player
@@ -187,12 +200,15 @@ const timer = {
 function startGame() {
     gameArea.start()
     player = new Player(50, 50)
+    for (let i = 0; i < INITIAL_ASTEROIDS; i++) {
+        asteroids.push(new Asteroid())
+    }
     document.addEventListener('keydown', event => {
         player.newPos(event.key)
     })
     const asteroidsInterval = setInterval(() => {
         asteroids.push(new Asteroid())
-        if (asteroids.length === NUMBER_OF_ASTEROIDS) {
+        if (asteroids.length === MAX_ASTEROIDS) {
             clearInterval(asteroidsInterval)
         }
     }, GENERATE_TIME)
@@ -242,3 +258,5 @@ function updateTimer() {
         }
     }
 }
+
+startGame()
