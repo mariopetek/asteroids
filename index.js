@@ -83,7 +83,7 @@ class Player extends Component {
     /**
      * Pritisnute tipke na tipkovnici.
      */
-    keys
+    keyboardKeys
 
     /**
      * Postavlja širinu, visinu, boju ispune, boju obruba, poziciju i brzinu igrača.
@@ -109,23 +109,23 @@ class Player extends Component {
         this.speed_x = this.speed_y = 4
 
         // Postavljanje pritisnutih tipki na prazan objekt.
-        this.keys = {}
+        this.keyboardKeys = {}
     }
 
     /**
      * Ažurira poziciju igrača ovisno o pritisnutoj tipki na tipovnici.
      */
     newPos() {
-        // U slučaju pritiska gornje strelice smanjujemo y koordinatu igrača za brzinu u smjeru y osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz gornji rub.
-        if (this.keys['ArrowUp']) {
+        // U slučaju pritiska gornje strelice smanjuje se y koordinata igrača za brzinu u smjeru y osi i ne dozvoljava se da igrač izađe iz Canvasa kroz gornji rub.
+        if (this.keyboardKeys['ArrowUp']) {
             if (this.y - this.speed_y < 0) {
                 this.y = 0
             } else {
                 this.y -= this.speed_y
             }
         }
-        // U slučaju pritiska donje strelice povećavamo y koordinatu igrača za brzinu u smjeru y osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz donji rub.
-        if (this.keys['ArrowDown']) {
+        // U slučaju pritiska donje strelice povećava se y koordinata igrača za brzinu u smjeru y osi i ne dozvoljava se da igrač izađe iz Canvasa kroz donji rub.
+        if (this.keyboardKeys['ArrowDown']) {
             if (
                 this.y + this.height + this.speed_y >
                 gameArea.context.canvas.height
@@ -135,16 +135,16 @@ class Player extends Component {
                 this.y += this.speed_y
             }
         }
-        // U slučaju pritiska lijeve strelice smanjujemo x koordinatu igrača za brzinu u smjeru x osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz lijevi rub.
-        if (this.keys['ArrowLeft']) {
+        // U slučaju pritiska lijeve strelice smanjuje se x koordinata igrača za brzinu u smjeru x osi i ne dozvoljava se da igrač izađe iz Canvasa kroz lijevi rub.
+        if (this.keyboardKeys['ArrowLeft']) {
             if (this.x - this.speed_x < 0) {
                 this.x = 0
             } else {
                 this.x -= this.speed_x
             }
         }
-        // U slučaju pritiska desne strelice povećavamo x koordinatu igrača za brzinu u smjeru x osi i ne dozvoljavamo da igrač izađe iz Canvasa kroz desni rub.
-        if (this.keys['ArrowRight']) {
+        // U slučaju pritiska desne strelice povećava se x koordinata igrača za brzinu u smjeru x osi i ne dozvoljava se da igrač izađe iz Canvasa kroz desni rub.
+        if (this.keyboardKeys['ArrowRight']) {
             if (
                 this.x + this.width + this.speed_x >
                 gameArea.context.canvas.width
@@ -174,25 +174,25 @@ class Asteroid extends Component {
         // Odabir nasumičnog broja iz intervala cijelih brojeva [0, 3] koji predstavlja stranu na kojoj će se iscrtati asteroid.
         const randomSide = Math.floor(Math.random() * 4)
         switch (randomSide) {
-            // 0 predstavlja gornju stranu Canvasa (postavljamo poziciju na način da se asteroid iscrta iznad gornjeg ruba Canvasa s nasumičnom x koordinatom).
+            // 0 predstavlja gornju stranu Canvasa (postavljanje pozicije na način da se asteroid iscrta iznad gornjeg ruba Canvasa s nasumičnom x koordinatom).
             case 0: {
                 this.x = Math.random() * gameArea.context.canvas.width
                 this.y = -this.height - 200
                 break
             }
-            // 1 predstavlja donju stranu Canvasa (postavljamo poziciju na način da se asteroid iscrta ispod donjeg ruba Canvasa s nasumičnom x koordinatom).
+            // 1 predstavlja donju stranu Canvasa (postavljanje pozicije na način da se asteroid iscrta ispod donjeg ruba Canvasa s nasumičnom x koordinatom).
             case 1: {
                 this.x = Math.random() * gameArea.context.canvas.width
                 this.y = gameArea.context.canvas.height + 200
                 break
             }
-            // 2 predstavlja lijevu stranu Canvasa (postavljamo poziciju na način da se asteroid iscrta ispred lijevog ruba Canvasa s nasumičnom y koordinatom).
+            // 2 predstavlja lijevu stranu Canvasa (postavljanje pozicije na način da se asteroid iscrta ispred lijevog ruba Canvasa s nasumičnom y koordinatom).
             case 2: {
                 this.x = -this.width - 200
                 this.y = Math.random() * gameArea.context.canvas.height
                 break
             }
-            // 3 predstavlja desnu stranu Canvasa (postavljamo poziciju na način da se asteroid iscrta nakon desnog ruba Canvasa s nasumičnom y koordinatom).
+            // 3 predstavlja desnu stranu Canvasa (postavljanje pozicije na način da se asteroid iscrta nakon desnog ruba Canvasa s nasumičnom y koordinatom).
             case 3: {
                 this.x = gameArea.context.canvas.width + 200
                 this.y = Math.random() * gameArea.context.canvas.height
@@ -256,11 +256,6 @@ class GameArea {
     gameInterval
 
     /**
-     * Interval u kojem se poziva funkcija za ažuriranje brojača.
-     */
-    timerInterval
-
-    /**
      * Kreira Canvas element.
      */
     constructor() {
@@ -288,22 +283,20 @@ class GameArea {
         // Varijabla u koju se sprema rezultat funkcije setInterval služi kako bi preko nje mogli zaustaviti interval.
         this.gameInterval = setInterval(updateGameArea, 20)
 
-        // Ažuriranje brojača svakih 10 milisekundi (poziv predane callback funkcije svakih 10 milisekundi).
-        // Varijabla u koju se sprema rezultat funkcije setInterval služi kako bi preko nje mogli zaustaviti interval.
-        this.timerInterval = setInterval(updateTimer, 10)
+        // Početak brojača.
+        requestAnimationFrame(updateTimer)
     }
 
     /**
      * Zaustavlja iscrtavanje i brojač te ažurira local storage po potrebi.
      */
     stop() {
-        // Zaustavljanje intervala koji poziva funkciju za ažuriranje iscrtavanja i intervala koji poziva funkciju za ažuriranje brojača.
-        clearInterval(this.gameInterval)
-        clearInterval(this.timerInterval)
+        // Zaustavljanje intervala koji poziva funkciju za ažuriranje iscrtavanja.
+        this.gameInterval = clearInterval(this.gameInterval)
 
-        // Dohvaćamo vrijednost iz local storagea te ako ona postoji uspoređujemo tu vrijednost s novodobivenim vremenom.
-        // Ako je novodobiveno vrijeme veće, ažuriramo vrijednost u local storageu.
-        // Ako ne postoji vrijednost u local storageu, postavljamo vrijednost novodobivenog vremena.
+        // Dohvaćanje vrijednosti iz local storagea te ako ona postoji uspoređujemo tu vrijednost s novodobivenim vremenom.
+        // Ako je novodobiveno vrijeme veće, ažurira se vrijednost u local storageu.
+        // Ako ne postoji vrijednost u local storageu, postavlja se vrijednost novodobivenog vremena.
         const localStorageTime = localStorage.getItem('best')
         const currentTime = `${String(timer.min).padStart(2, '0')}:${String(
             timer.sec
@@ -354,7 +347,8 @@ const asteroids = []
 const timer = {
     min: 0,
     sec: 0,
-    milli: 0
+    milli: 0,
+    last: 0
 }
 
 /**
@@ -374,12 +368,12 @@ function startGame() {
 
     // Dodavanje listenera koji po pritisku tipke na tipkovnici uključuje pritisnutu tipku u atributu keys objekta player.
     document.addEventListener('keydown', event => {
-        player.keys[event.key] = true
+        player.keyboardKeys[event.key] = true
     })
 
     // Dodavanje listenera koji po prestanku pritiska tipke na tipkovnici isključuje tu tipku u atributu keys objekta player.
     document.addEventListener('keyup', event => {
-        player.keys[event.key] = false
+        player.keyboardKeys[event.key] = false
     })
 
     // Postavljanje intervala koji nakon zadanog vremena stvara novi asteroid do maksimalnog broja asteroida.
@@ -442,18 +436,28 @@ function updateGameArea() {
 
 /**
  * Ažurira atribute objekta timer (milisekunde, sekunde i minute).
- * Poziva se kao callback svakih 10 milisekundi.
+ * Poziva se kao callback s jednim predefinitanim argumentom (timestamp) unutar requestAnimationFrame funkcije.
  */
-function updateTimer() {
-    timer.milli += 10
-    if (timer.milli === 1000) {
-        timer.milli = 0
+function updateTimer(timestamp) {
+    // Računanje vremena proteklog od zadnjeg prikaza okvira.
+    const elapsed = timestamp - timer.last
+
+    // Ažuriranje milisekundi, sekundi i minuti po potrebi.
+    timer.milli += elapsed
+    if (timer.milli >= 1000) {
+        timer.milli -= 1000
         timer.sec++
         if (timer.sec === 60) {
             timer.sec = 0
             timer.min++
         }
     }
+
+    // Zahtjev za sljedećim okvirom ako igra još traje.
+    if (gameArea.gameInterval) requestAnimationFrame(updateTimer)
+
+    // Postavljanje vremena zadnjeg prikaza okvira.
+    timer.last = timestamp
 }
 
 // Početak igre.
