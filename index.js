@@ -48,7 +48,7 @@ class Component {
     speed_y
 
     /**
-     * Postavljanje svojstava konteksta crtanja te iscrtavanje komponente na Canvasu.
+     * Postavlja svojstva konteksta crtanja te iscrtava komponentu na Canvasu.
      */
     update() {
         // Dohvaćanje konteksta crtanja.
@@ -162,7 +162,7 @@ class Player extends Component {
  */
 class Asteroid extends Component {
     /**
-     * Postavlja širinu, visinu, poziciju, boju ispune, boju obruba i brzinu asteroida.
+     * Postavlja širinu, visinu, poziciju, boju ispune, boju obruba i brzinu/smjer gibanja asteroida.
      */
     constructor() {
         super()
@@ -294,7 +294,7 @@ class GameArea {
     }
 
     /**
-     * Zaustavlja isrctavanje i brojač te ažurira local storage po potrebi.
+     * Zaustavlja iscrtavanje i brojač te ažurira local storage po potrebi.
      */
     stop() {
         // Zaustavljanje intervala koji poziva funkciju za ažuriranje iscrtavanja i intervala koji poziva funkciju za ažuriranje brojača.
