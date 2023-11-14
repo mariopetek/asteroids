@@ -288,7 +288,7 @@ class GameArea {
     }
 
     /**
-     * Zaustavlja iscrtavanje i brojač te ažurira local storage po potrebi.
+     * Zaustavlja iscrtavanje i brojač, ažurira local storage po potrebi te prikazuje dialog.
      */
     stop() {
         // Zaustavljanje intervala koji poziva funkciju za ažuriranje iscrtavanja.
@@ -381,12 +381,12 @@ function startGame() {
         asteroids.push(new Asteroid())
     }
 
-    // Dodavanje listenera koji po pritisku tipke na tipkovnici uključuje pritisnutu tipku u atributu keys objekta player.
+    // Dodavanje listenera koji po pritisku tipke na tipkovnici uključuje pritisnutu tipku u atributu keyboardKeys objekta player.
     document.addEventListener('keydown', event => {
         player.keyboardKeys[event.key] = true
     })
 
-    // Dodavanje listenera koji po prestanku pritiska tipke na tipkovnici isključuje tu tipku u atributu keys objekta player.
+    // Dodavanje listenera koji po prestanku pritiska tipke na tipkovnici isključuje tu tipku u atributu keyboardKeys objekta player.
     document.addEventListener('keyup', event => {
         player.keyboardKeys[event.key] = false
     })
