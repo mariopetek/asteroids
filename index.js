@@ -274,7 +274,7 @@ class GameArea {
         this.canvas.height = window.innerHeight
 
         // Dodavanje canvas elementa u DOM.
-        document.body.appendChild(this.canvas)
+        document.body.insertBefore(this.canvas, document.body.childNodes[0])
 
         // Postavljanje konteksta crtanja Canvasa.
         this.context = this.canvas.getContext('2d')
@@ -316,6 +316,21 @@ class GameArea {
         } else {
             localStorage.setItem('best', currentTime)
         }
+
+        // Prikaz dialog elementa po završetku igre s ispisom trenutnog i najboljeg vremena te opcijom za ponovni početak igre.
+        const gameFinishedDialog = document.querySelector('.gameFinishedDialog')
+        document.querySelector(
+            '.bestTime'
+        ).innerHTML = `Najbolje vrijeme: ${localStorage.getItem('best')}`
+        document.querySelector(
+            '.currentTime'
+        ).innerHTML = `Vrijeme: ${currentTime}`
+        gameFinishedDialog.showModal()
+        const playAgainButton = document.querySelector('.playAgainButton')
+        playAgainButton.addEventListener('click', () => {
+            gameFinishedDialog.close()
+            location.reload()
+        })
     }
     /**
      * Čisti cijeli kontekst crtanja Canvasa.
@@ -413,7 +428,7 @@ function updateGameArea() {
 
     // Postavljanje stila teksta.
     gameArea.context.textAlign = 'end'
-    gameArea.context.font = '25px Arial'
+    gameArea.context.font = '20px monospace'
 
     // Iscrtavanje teksta za najbolje vrijeme na Canvasu.
     const bestTime = localStorage.getItem('best') || '-'
@@ -443,7 +458,7 @@ function updateTimer(timestamp) {
     const elapsed = timestamp - timer.last
 
     // Ažuriranje milisekundi, sekundi i minuti po potrebi.
-    timer.milli += elapsed
+    timer.milli = Math.floor(timer.milli + elapsed)
     if (timer.milli >= 1000) {
         timer.milli -= 1000
         timer.sec++

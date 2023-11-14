@@ -1,19 +1,48 @@
 :root {
-    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
 }
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 body {
     width: 100%;
     min-height: 100vh;
     overflow: hidden;
+    margin: 0;
 }
 .gameCanvas {
     background-color: #ffffff;
     min-width: 100%;
     height: 100vh;
-    border: 4px solid red;
+    border: 4px solid rgb(255, 0, 0);
+}
+.gameFinishedDialog {
+    background-color: #ffffff;
+    border: 4px solid rgb(255, 0, 0);
+    border-radius: 10px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.gameFinishedDialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.gameFinishedDialog > p {
+    margin: 0;
+}
+.playAgainButton {
+    padding: 10px;
+    outline: none;
+    border: none;
+    background-color: rgb(255, 0, 0);
+    color: #ffffff;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+.playAgainButton:hover {
+    filter: brightness(80%);
+    cursor: pointer;
 }
