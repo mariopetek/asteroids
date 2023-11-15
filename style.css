@@ -17,6 +17,7 @@ body {
     height: 100vh;
     border: 4px solid rgb(255, 0, 0);
 }
+/*
 .gameFinishedDialog {
     background-color: #ffffff;
     border: 4px solid rgb(255, 0, 0);
@@ -45,4 +46,4 @@ body {
 .playAgainButton:hover {
     filter: brightness(80%);
     cursor: pointer;
-}
+}*/
