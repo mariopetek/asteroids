@@ -318,7 +318,6 @@ class GameArea {
         }
 
         // Prikaz dialog elementa po završetku igre s ispisom trenutnog i najboljeg vremena te opcijom za ponovni početak igre.
-        /*
         const gameFinishedDialog = document.querySelector('.gameFinishedDialog')
         document.querySelector(
             '.bestTime'
@@ -332,7 +331,6 @@ class GameArea {
             gameFinishedDialog.close()
             location.reload()
         })
-        */
     }
     /**
      * Čisti cijeli kontekst crtanja Canvasa.
