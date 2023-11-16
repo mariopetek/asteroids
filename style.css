@@ -5,15 +5,15 @@
 * {
     box-sizing: border-box;
 }
+html,
 body {
-    width: 100%;
-    min-height: 100vh;
+    height: 100%;
     overflow: hidden;
     margin: 0;
 }
 .gameCanvas {
     background-color: #ffffff;
-    min-width: 100%;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     border: 4px solid rgb(255, 0, 0);
 }
