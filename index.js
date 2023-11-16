@@ -416,7 +416,7 @@ function updateGameArea() {
     gameArea.context.font = '20px monospace'
 
     // Iscrtavanje teksta za najbolje vrijeme na Canvasu.
-    const bestTime = localStorage.getItem('best') || '-'
+    const bestTime = localStorage.getItem('best') || '--:--.---'
     gameArea.context.fillText(
         `Najbolje vrijeme: ${bestTime}`,
         gameArea.context.canvas.width - 50,
