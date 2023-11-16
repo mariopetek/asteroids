@@ -433,24 +433,59 @@ function updateGameArea() {
         80
     )
 
-    // Iscrtavanje slike strelica i pripadnog teksta.
-    const arrowsImg = document.querySelector('.arrowsImg')
+    // Iscrtavanje slika strelica i pripadnog teksta.
+    const imgSize = 30
+    const translateArrowY = 155
+    const translateArrowX = 80
+    const arrowUpImg = document.querySelector('.arrowUpImg')
+    const arrowDownImg = document.querySelector('.arrowDownImg')
+    const arrowLeftImg = document.querySelector('.arrowLeftImg')
+    const arrowRightImg = document.querySelector('.arrowRightImg')
     gameArea.context.drawImage(
-        arrowsImg,
-        gameArea.context.canvas.width - 235,
-        gameArea.context.canvas.height - 143,
-        80,
-        80
+        arrowRightImg,
+        gameArea.context.canvas.width - imgSize - translateArrowY,
+        gameArea.context.canvas.height - imgSize - translateArrowX,
+        imgSize,
+        imgSize
+    )
+    gameArea.context.drawImage(
+        arrowDownImg,
+        gameArea.context.canvas.width - imgSize * 2 - translateArrowY,
+        gameArea.context.canvas.height - imgSize - translateArrowX,
+        imgSize,
+        imgSize
+    )
+    gameArea.context.drawImage(
+        arrowLeftImg,
+        gameArea.context.canvas.width - imgSize * 3 - translateArrowY,
+        gameArea.context.canvas.height - imgSize - translateArrowX,
+        imgSize,
+        imgSize
+    )
+    gameArea.context.drawImage(
+        arrowUpImg,
+        gameArea.context.canvas.width - imgSize * 2 - translateArrowY,
+        gameArea.context.canvas.height - imgSize * 2 - translateArrowX,
+        imgSize,
+        imgSize
     )
     gameArea.context.fillText(
-        ' Kretanje',
+        'Kretanje',
         gameArea.context.canvas.width - 50,
-        gameArea.context.canvas.height - 80
+        gameArea.context.canvas.height - 100
     )
 
-    // Iscrtavanje teksta za restart igre.
+    // Iscrtavanje slike i pripadnog teksta za restart igre.
+    const rImg = document.querySelector('.rImg')
+    gameArea.context.drawImage(
+        rImg,
+        gameArea.context.canvas.width - 170,
+        gameArea.context.canvas.height - 70,
+        imgSize,
+        imgSize
+    )
     gameArea.context.fillText(
-        'R: Restart',
+        'Restart',
         gameArea.context.canvas.width - 50,
         gameArea.context.canvas.height - 50
     )
