@@ -251,7 +251,7 @@ class GameArea {
     context
 
     /**
-     * Interval u kojem se poziva funkcija za ažuriranje iscrtavanja.
+     * Identifikator intervala u kojem se poziva funkcija za ažuriranje iscrtavanja.
      */
     gameInterval
 
@@ -266,6 +266,15 @@ class GameArea {
      * Postavlja parametre canvas elementa i dodaje ga u DOM te započinje interval ažuriranja iscrtavanja te interval ažuriranja brojača.
      */
     start() {
+        // Pražnjenje igrača i asteroida.
+        player = null
+        asteroids.splice(0, asteroids.length)
+        clearInterval(asteroidsInterval)
+
+        // Postavljanje inicijalnih vrijednosti brojača.
+        timer.min = timer.sec = timer.milli = 0
+        timer.last = document.timeline.currentTime
+
         // Dodavanje 'gameCanvas' vrijednosti u listu vrijednosti class atributa canvas elementa.
         this.canvas.classList.add('gameCanvas')
 
@@ -343,13 +352,11 @@ let player
 // Inicijalizacija polja asteroida u koje će biti pohranjeni generirani asteroidi.
 const asteroids = []
 
+// Deklaracija identifikatora intervala za stvaranje asteroida.
+let asteroidsInterval
+
 // Inicijalizacija brojača.
-const timer = {
-    min: 0,
-    sec: 0,
-    milli: 0,
-    last: 0
-}
+const timer = {}
 
 /**
  * Započinje igru stvaranjem Canvasa, igrača i asteroida.
@@ -366,18 +373,8 @@ function startGame() {
         asteroids.push(new Asteroid())
     }
 
-    // Dodavanje listenera koji po pritisku tipke na tipkovnici uključuje pritisnutu tipku u atributu keyboardKeys objekta player.
-    document.addEventListener('keydown', event => {
-        player.keyboardKeys[event.key] = true
-    })
-
-    // Dodavanje listenera koji po prestanku pritiska tipke na tipkovnici isključuje tu tipku u atributu keyboardKeys objekta player.
-    document.addEventListener('keyup', event => {
-        player.keyboardKeys[event.key] = false
-    })
-
     // Postavljanje intervala koji nakon zadanog vremena stvara novi asteroid do maksimalnog broja asteroida.
-    const asteroidsInterval = setInterval(() => {
+    asteroidsInterval = setInterval(() => {
         asteroids.push(new Asteroid())
         if (asteroids.length === MAX_ASTEROIDS) {
             clearInterval(asteroidsInterval)
@@ -517,10 +514,21 @@ function updateTimer(timestamp) {
     timer.last = timestamp
 }
 
+// Dodavanje listenera koji po pritisku tipke na tipkovnici uključuje pritisnutu tipku u atributu keyboardKeys objekta player.
+document.addEventListener('keydown', event => {
+    player.keyboardKeys[event.key] = true
+})
+
+// Dodavanje listenera koji po prestanku pritiska tipke na tipkovnici isključuje tu tipku u atributu keyboardKeys objekta player.
+document.addEventListener('keyup', event => {
+    player.keyboardKeys[event.key] = false
+})
+
 // Dodavanje listenera za restart igre.
 document.addEventListener('keydown', event => {
     if (event.key.toLowerCase() === 'r') {
-        location.reload()
+        clearInterval(gameArea.gameInterval)
+        startGame()
     }
 })
 
