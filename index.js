@@ -316,21 +316,6 @@ class GameArea {
         } else {
             localStorage.setItem('best', currentTime)
         }
-
-        // Prikaz dialog elementa po završetku igre s ispisom trenutnog i najboljeg vremena te opcijom za ponovni početak igre.
-        const gameFinishedDialog = document.querySelector('.gameFinishedDialog')
-        document.querySelector(
-            '.bestTime'
-        ).innerHTML = `Najbolje vrijeme: ${localStorage.getItem('best')}`
-        document.querySelector(
-            '.currentTime'
-        ).innerHTML = `Vrijeme: ${currentTime}`
-        gameFinishedDialog.showModal()
-        const playAgainButton = document.querySelector('.playAgainButton')
-        playAgainButton.addEventListener('click', () => {
-            gameFinishedDialog.close()
-            location.reload()
-        })
     }
     /**
      * Čisti cijeli kontekst crtanja Canvasa.
@@ -447,6 +432,29 @@ function updateGameArea() {
         gameArea.context.canvas.width - 50,
         80
     )
+
+    // Iscrtavanje slike strelica i pripadnog teksta.
+    const arrowsImg = document.querySelector('.arrowsImg')
+    gameArea.context.drawImage(
+        arrowsImg,
+        gameArea.context.canvas.width - 235,
+        gameArea.context.canvas.height - 160,
+        80,
+        80
+    )
+    gameArea.context.fillText(
+        ' Kretanje',
+        gameArea.context.canvas.width - 50,
+        gameArea.context.canvas.height - 100,
+        100
+    )
+
+    // Iscrtavanje teksta za restart igre.
+    gameArea.context.fillText(
+        'R: Restart',
+        gameArea.context.canvas.width - 50,
+        gameArea.context.canvas.height - 50
+    )
 }
 
 /**
@@ -474,6 +482,13 @@ function updateTimer(timestamp) {
     // Postavljanje vremena zadnjeg prikaza okvira.
     timer.last = timestamp
 }
+
+// Dodavanje listenera za restart igre.
+document.addEventListener('keydown', event => {
+    if (event.key.toLowerCase() === 'r') {
+        location.reload()
+    }
+})
 
 // Početak igre.
 startGame()
