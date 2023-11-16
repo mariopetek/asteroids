@@ -438,15 +438,14 @@ function updateGameArea() {
     gameArea.context.drawImage(
         arrowsImg,
         gameArea.context.canvas.width - 235,
-        gameArea.context.canvas.height - 160,
+        gameArea.context.canvas.height - 143,
         80,
         80
     )
     gameArea.context.fillText(
         ' Kretanje',
         gameArea.context.canvas.width - 50,
-        gameArea.context.canvas.height - 100,
-        100
+        gameArea.context.canvas.height - 80
     )
 
     // Iscrtavanje teksta za restart igre.
