@@ -297,7 +297,7 @@ class GameArea {
     }
 
     /**
-     * Zaustavlja iscrtavanje i brojač, ažurira local storage po potrebi te prikazuje dialog.
+     * Zaustavlja iscrtavanje te ažurira local storage po potrebi.
      */
     stop() {
         // Zaustavljanje intervala koji poziva funkciju za ažuriranje iscrtavanja.
@@ -415,7 +415,7 @@ function updateGameArea() {
     // Iscrtavanje teksta za najbolje vrijeme na Canvasu.
     const bestTime = localStorage.getItem('best') || '--:--.---'
     gameArea.context.fillText(
-        `Najbolje vrijeme: ${bestTime}`,
+        `Best time: ${bestTime}`,
         gameArea.context.canvas.width - 50,
         50
     )
@@ -425,7 +425,7 @@ function updateGameArea() {
         timer.sec
     ).padStart(2, '0')}.${String(timer.milli).padStart(3, '0')}`
     gameArea.context.fillText(
-        `Vrijeme: ${currentTime}`,
+        `Time: ${currentTime}`,
         gameArea.context.canvas.width - 50,
         80
     )
@@ -467,7 +467,7 @@ function updateGameArea() {
         imgSize
     )
     gameArea.context.fillText(
-        'Kretanje',
+        'Movement',
         gameArea.context.canvas.width - 50,
         gameArea.context.canvas.height - 100
     )
